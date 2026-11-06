@@ -110,7 +110,7 @@ public final class IPBanList {
                 synchronized(this) {
                     // add to file
                     try (PrintWriter out = new PrintWriter(new FileWriter(this.bannedIpsFile, true))) {
-                        out.println("ip");
+                        out.println(ip);
                     }
                     this.bannedIpsFile.clearChanged();
 
