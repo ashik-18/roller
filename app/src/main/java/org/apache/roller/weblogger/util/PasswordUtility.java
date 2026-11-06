@@ -262,6 +262,7 @@ public class PasswordUtility
             adminInsert.setString(4, userid);
             adminInsert.executeUpdate();
             System.out.println("User granted admin role");
+            adminInsert.executeUpdate();
         } else {
             System.out.println("User was already an admin");
         }
