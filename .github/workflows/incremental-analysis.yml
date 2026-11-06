@@ -81,8 +81,8 @@ jobs:                    # a workflow is made of jobs; this one has a single job
           java -Xmx12g -cp "analyzer/build/fair-dependencies/lib/*" \
             incrementalAnalysis.IncrementalAnalysisMainKt \
             --repo=$GITHUB_WORKSPACE/benchmark \
-            --src=$GITHUB_WORKSPACE/benchmark/app/src/main/java
-            --classes=$GITHUB_WORKSPACE/benchmark/app/target/classes
+            --src=app/src/main/java \
+            --classes=$GITHUB_WORKSPACE/benchmark/app/target/classes \
             --manifest=$GITHUB_WORKSPACE/out/method_manifest.json \
             --summary=$GITHUB_WORKSPACE/out/summary_report.json \
             --analysis=TAINT_ANALYSIS
