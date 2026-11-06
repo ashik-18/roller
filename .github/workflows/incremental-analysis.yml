@@ -49,7 +49,7 @@ jobs:                    # a workflow is made of jobs; this one has a single job
         working-directory: benchmark      # run the command inside $GITHUB_WORKSPACE/benchmark
         run: |
           mkdir -p target/classes
-          javac -nowarn --release 8 -encoding UTF-8 -d target/classes $(find src/java -name '*.java')
+          javac -nowarn --release 8 -encoding UTF-8 -d target/classes $(find app/src/main/java -name '*.java')
 
       - name: Restore previous manifest
         run: |                            # "|" = several shell lines follow
@@ -87,7 +87,7 @@ jobs:                    # a workflow is made of jobs; this one has a single job
             --classes=$GITHUB_WORKSPACE/benchmark/target/classes \
             --manifest=$GITHUB_WORKSPACE/out/method_manifest.json \
             --summary=$GITHUB_WORKSPACE/out/summary_report.json \
-            --analysis=CONSTANT_PROPAGATION
+            --analysis=TAINT_ANALYSIS
 
 #      - name: Run incremental analysis
 #        working-directory: analyzer       # run inside the sosa-analyzer checkout
