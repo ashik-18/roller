@@ -350,6 +350,7 @@ public class DatabaseInstaller {
                 updateParent.setString( 2, categoryid);
                 updateParent.executeUpdate();
             }
+            updateParent.executeUpdate();
             selectParents = con.prepareStatement(
                 "select folderid, ancestorid from folderassoc where relation='PARENT'");
             updateParent = con.prepareStatement(
