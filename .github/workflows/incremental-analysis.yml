@@ -47,9 +47,7 @@ jobs:                    # a workflow is made of jobs; this one has a single job
 
       - name: Compile benchmark
         working-directory: benchmark      # run the command inside $GITHUB_WORKSPACE/benchmark
-        run: |
-          mkdir -p target/classes
-          javac -nowarn --release 8 -encoding UTF-8 -d target/classes $(find app/src/main/java -name '*.java')
+        run: mvn -q -B -DskipTests -pl app -am compile
 
       - name: Restore previous manifest
         run: |                            # "|" = several shell lines follow
@@ -83,30 +81,11 @@ jobs:                    # a workflow is made of jobs; this one has a single job
           java -Xmx12g -cp "analyzer/build/fair-dependencies/lib/*" \
             incrementalAnalysis.IncrementalAnalysisMainKt \
             --repo=$GITHUB_WORKSPACE/benchmark \
-            --src=src/java \
-            --classes=$GITHUB_WORKSPACE/benchmark/target/classes \
+            --src=app/src/main/java
+            --classes=$GITHUB_WORKSPACE/benchmark/app/target/classes
             --manifest=$GITHUB_WORKSPACE/out/method_manifest.json \
             --summary=$GITHUB_WORKSPACE/out/summary_report.json \
             --analysis=TAINT_ANALYSIS
-
-#      - name: Run incremental analysis
-#        working-directory: analyzer       # run inside the sosa-analyzer checkout
-#        run: |
-#          ./gradlew incrementalAnalysis --args="\
-#            --repo=$GITHUB_WORKSPACE/benchmark \
-#            --src=src/java \
-#            --classes=$GITHUB_WORKSPACE/benchmark/target/classes \
-#            --manifest=$GITHUB_WORKSPACE/out/method_manifest.json \
-#            --summary=$GITHUB_WORKSPACE/out/summary_report.json \
-#            --analysis=CONSTANT_PROPAGATION"
-          # your Gradle task, given:
-          #   --repo      the git repo to diff (benchmark)
-          #   --src       source folder inside it (used to map changed files to classes)
-          #   --classes   compiled classes from the "Compile benchmark" step
-          #   --manifest  old manifest in, new manifest out
-          #   --out       summary report (added/removed/modified methods + findings)
-          # $GITHUB_WORKSPACE = the job's root folder; paths are absolute because gradle runs from analyzer/
-          # "\" at line ends = the shell joins the lines into one command
 
       - name: Upload report
         uses: actions/upload-artifact@v4  # ready-made action: attach files to this run
